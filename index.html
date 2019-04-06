@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Startpage</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500|Raleway:400i" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="top">
+            <div class="settings"><i class="fas fa-cog"></i></div>
+            <hr>
+            <h1 class="time">23:59</h1>
+            <h2 class="week-day">Sunday</h2>
+            <p class="random-quote">"Strong minds discuss ideas, average minds discuss events, weak minds discuss people." - Socrates</p>
+            <hr>
+        </div>
+
+        <div class="middle">
+            <div class="links">
+                <div class="add"><i class="fas fa-plus"></i></div>
+
+                <ul class="bookmarks">
+                    
+                </ul>
+            </div>
+            <div class="middle-center">
+<!--                <div class="search-input">-->
+                                <form action="#" class="search-input">
+                    <input class="search-net" type="text" placeholder="Google" autofocus tabindex="1">
+                                </form>
+<!--                </div>-->
+                <div class="todos">
+                    <div class="add-todos">
+                        <form action="#" class="add-todo">
+                            <input class="todo-input" type="text" placeholder="Add todo!" tabindex="2">
+                        </form>
+                    </div>
+                    <ul class="todos-list">
+                            
+                    </ul>
+                </div>
+                <div class="city-info">
+                    <div class="city-info-child">
+                        <h2 class="city-location">City, LT</h2>
+                        <div class="update">
+                            <i class="fas fa-redo-alt update-weather"></i>
+                            <p class="city-last-update">15:00</p>
+                        </div>
+                        <div class="city-info-top">
+                            <p>Sunrise<br><span class="sunrise"></span></p>
+                            <div class="info-today">
+                                <p><b><span class="weather-info"></span>C</b></p>
+                                <p class="city-main">Clouds</p>
+                                <img src="http://openweathermap.org/img/w/04d.png" alt="" class="weather-img">
+                                <p><span class="wind-deg"></span> <br><span class="wind-speed"></span> m/s</p>
+                            </div>
+                            <p>Sunset<br><span class="sunset"></span></p>
+                            <hr>
+                        </div>
+                        <div class="city-info-bottom">
+                            <p class="city-info-bottom-pressure">Pressure <br><span class="city-pressure"></span></p>
+                            <p>Humidity <br><span class="city-humidity"></span></p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="news-api">
+                <ul class="news-list">
+                    <li><a href="#">Morgan Freeman Converts his Mississippi Ranch into a Honey Bee Sanctuary</a></li>
+                    <li><a href="#">Morgan Freeman Converts his Mississippi Ranch into a Honey Bee Sanctuary</a></li>
+                    <li><a href="#">Ohio makes 'shelter pets' the official state pet to raise awareness about animal adoption</a></li>
+                    <li><a href="#">Ohio makes 'shelter pets' the official state pet to raise awareness about animal adoption</a></li>
+                </ul>
+            </div>
+
+
+
+            <div class="modal">
+                <div class="modal-content">
+                <i class="fas fa-times close"></i>
+                   <h1><span class="modal-type"></span></h1>
+                    <hr>
+                    <div class="modal-content-info">
+                        
+                    </div>
+                    <div class="modal-buttons">
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+    <script src="js/apireddit.js"></script>
+    <script src="js/apiweather.js"></script>
+    <script src="js/todo.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/bookmarks.js"></script>
+    <script src="js/localstorage.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
