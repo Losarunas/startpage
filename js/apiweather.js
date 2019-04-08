@@ -12,4 +12,5 @@ class Weatherapi {
         return resData;
     }
     
+    
 }

@@ -28,12 +28,7 @@ class Bookmarks {
         }
         
         location.reload();
-    }
-    
-//    giveBookmarks(){
-//        let lsparse = getLS();
-//        return lsparse;
-//    }   
+    } 
     
 }
 

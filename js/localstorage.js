@@ -1,7 +1,11 @@
 class Storage{
-    constructor(val, keyLS) {
-        this.val = val;
-        this.keyLS = keyLS;
+    constructor(lat, lon, unit, randomBg, subredditFirst, subrreditSecond) {
+        this.lat = lat;
+        this.lon = lon;
+        this.unit = unit;
+        this.randomBg = randomBg;
+        this.subredditFirst = subredditFirst;
+        this.subrreditSecond = subrreditSecond;
     }
     
     // Put to LS 
@@ -33,10 +37,37 @@ class Storage{
         }
         localStorage.setItem(key, JSON.stringify(ls));
     }
+    
     settings(){
+        localStorage.removeItem('settings');
+        let arrEl = [];    
+    
+        const weatherLat = document.querySelector(".weather-lat").value;
+        const weahterLon = document.querySelector(".weather-lon").value;
+        const randomBg = document.querySelector(".randomBgCheckbox").checked;
+        const firstSub = document.querySelector(".first-sub").value;
+        const secondSub = document.querySelector(".second-sub").value;
         
+        let metricCheckbox;
+        if(document.querySelector(".metricCheckbox").checked){
+            metricCheckbox = "metric";
+        } else {
+            metricCheckbox = "imperial";
+        }
+        
+        arrEl.push(weatherLat, weahterLon, randomBg, firstSub, secondSub, metricCheckbox);
+        storage.putToLS(arrEl, "settings");
+        location.reload();
     }
     
+    checkSettings(){
+        const settingsLS = storage.giveLSVal("settings");
+        if(settingsLS === null){
+            let arr = [12.12, 14.14, false, "quotes", "worldnews", true];
+            storage.putToLS(arr, "settings");
+        }
+    }
+
 }
 
 function getKeyLS(keyLS){

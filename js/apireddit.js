@@ -1,8 +1,8 @@
 class Redditapi {
-    constructor() {
+    constructor(firstSubreddit, secondSubreddit) {
         // Subreddits
-        this.firstSubreddit = 'quotes';
-        this.secondSubreddit = 'worldnews';
+        this.firstSubreddit = firstSubreddit
+        this.secondSubreddit = secondSubreddit;
     }
 
     async getData() {

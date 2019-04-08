@@ -45,18 +45,18 @@ class UI {
         this.newsList.innerHTML = output;
     }
 
-    paintWeather(data) {
+    paintWeather(data, unit) {
         this.location.innerHTML = `${data.name}, ${data.sys.country}`;
         this.cityLastUpdate.innerHTML = `${unixConvert(data.dt)}`;
         this.sunrise.innerHTML = `${unixConvert(data.sys.sunrise)}`;
         this.sunset.innerHTML = `${unixConvert(data.sys.sunset)}`;
-        this.weatherTemp.innerHTML = `${Math.round(data.main.temp)}`;
+        this.weatherTemp.innerHTML = `${changeUnitTemp(Math.round(data.main.temp), unit)}`;
         this.cityMain.innerHTML = `${data.weather[0].main}`;
         this.weatherImg.src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
         this.cityPressure.innerHTML = `${Math.round(data.main.pressure)} hPa`;
         this.cityHumidity.innerHTML = `${data.main.humidity} %`;
         this.windDeg.innerHTML = `${convDeg(data.wind.deg)}`;
-        this.windSpeed.innerHTML = `${Math.round(data.wind.speed)}`;
+        this.windSpeed.innerHTML = `${changeUnitWind(Math.round(data.wind.speed), unit)}`;
     }
 
     addToDo(val) {
@@ -91,15 +91,56 @@ class UI {
         // Create SETTINGS MODAL
         if (fn === "settings") {
             let output = '';
+            let buttons = '';
             modalType.innerHTML = "Settings";
-            
+            const allSettings = storage.giveLSVal("settings");
             
             output += `<div class="row">
-                <div class="entry">Location</div>
-                
-                </div>`;
+    <div class="row-entry">Location</div>
+    <div class="row-values">
+        <div class="vert-allign">
+        <div class="vert-allign-top"><input class="weather-lat" type="text" placeholder="lat" value="${allSettings[0][0]}">lat
+        <input class="weather-lon" type="text" placeholder="lon" value="${allSettings[0][1]}">lon</div>
+        <div class="vert-allign-bottom"><a href="#" class="find-location">Get cordinates</a></div>
+    </div>
+    </div>
+</div>
+<div class="row">
+    <div class="row-entry">Random background</div>
+    <div class="row-values">
+        <label class="switch">
+  <input type="checkbox" class="randomBgCheckbox">
+  <span class="slider round"></span>
+</label>
+    </div>
+</div>
+    <div class="row">
+        <div class="row-entry">Subreddits</div>
+        <div class="row-values">
+            <div class="vert-allign subreddits">
+            <input class="first-sub" type="text" value="${allSettings[0][3]}">
+            <input class="second-sub" type="text" value="${allSettings[0][4]}">
+</div>
+        </div>
+</div>
+        <div class="row">
+            <div class="row-entry">Metric format:</div>
+            <div class="row-values">
+                <label class="switch">
+  <input type="checkbox" class="metricCheckbox">
+  <span class="slider round"></span>
+</label>
+            </div>
+</div><hr>`;
             
             node.innerHTML = output;
+            
+            checkifTrue(allSettings[0][2], "randomBgCheckbox");
+            checkifTrue(allSettings[0][5], "metricCheckbox");
+            
+            
+            buttons += `<i class="far fa-save save-settings"></i>`;
+            modalBottom.innerHTML = buttons;
         }
   
         // Create BOOKMARKS MODAL
@@ -149,10 +190,14 @@ class UI {
             document.querySelector(".add-new-bookmark").addEventListener("click", createBookmark);
             
             // Remove Bookmark
-            let removeBookmarks = document.querySelectorAll(".modal-remove-bookmark");
-            for (const remBook of removeBookmarks) {
-                remBook.addEventListener("click", (e) => removeBookmark(e));
-            }
+            node.addEventListener("click", (e) => {
+                if(e.target.classList.contains('modal-remove-bookmark')) removeBookmark(e); 
+            })
+            
+//            let removeBookmarks = document.querySelectorAll(".modal-remove-bookmark");
+//            for (const remBook of removeBookmarks) {
+//                remBook.addEventListener("click", (e) => removeBookmark(e));
+//            }
 
             // drag and drop
             //            const bookmarks = document.querySelectorAll(".bookmark-form");
@@ -219,6 +264,17 @@ class UI {
         target.parentElement.remove();
     }
 
+    randomBg(val){
+        if(val) document.body.style.backgroundImage = "url('https://source.unsplash.com/random')";
+    }
+    
+    errorMsg(msg, color, time){
+        let errorMs = document.querySelector(".error-mesage");
+        errorMs.style.opacity = 0.9;
+        errorMs.style.backgroundColor = color;
+        errorMs.innerHTML = msg;
+        setTimeout(() => { errorMs.style.opacity = 0; }, time);
+    }
 }
 // END CLASS
 
@@ -233,7 +289,7 @@ function createBookmark() {
             <input class="bookmark-name" type="text" placeholder="Name">
             <input class="bookmark-link" type="text" placeholder="Link">
             <div class="remove-bookmark modal-remove-bookmark">
-            <i class="fas fa-trash-alt"></i></div>
+            <i class="fas fa-trash-alt modal-remove-bookmark"></i></div>
             </form>`;
     node.innerHTML += output;
 }
@@ -266,7 +322,6 @@ function convertDate(time) {
 
 function convDeg(deg) {
     let windDir = '';
-    console.log(deg);
     switch (true) {
         case (deg < 22.5):
             windDir = "N";
@@ -296,6 +351,36 @@ function convDeg(deg) {
             windDir = "N";
     }
     return windDir;
+}
+
+// CHECK FROM LS CHECKBOXES IF TRUE
+function checkifTrue(val, checkBox){
+    let query = '.';
+    query += checkBox;
+    if(val === true || val === "metric"){
+        document.querySelector(query).checked = true;
+    } else {
+        document.querySelector(query).checked = false;
+    }
+}
+
+function changeUnitTemp(val, unit){
+    if(unit === "metric"){
+        let value = `${val} C`;
+        return value;
+    } else {
+        let value = `${val} F`;
+        return value;
+    }
+}
+function changeUnitWind(val, unit){
+    if(unit === "metric"){
+        let value = `${val} m/s`;
+        return value;
+    } else {
+        let value = `${val} m/h`;
+        return value;
+    }
 }
 
 // DRAG AND DROP  IN PROGRESS
