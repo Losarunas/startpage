@@ -1,6 +1,6 @@
 class UI {
     constructor() {
-        this.sideNavElements = 4;
+        this.sideNavElements = 3;
         this.randomQuote = document.querySelector(".random-quote");
         this.newsList = document.querySelector(".news-list");
         this.location = document.querySelector(".city-location");
@@ -15,7 +15,15 @@ class UI {
         this.windDeg = document.querySelector(".wind-deg");
         this.windSpeed = document.querySelector(".wind-speed");
         this.todoList = document.querySelector(".todos-list");
-        this.element = '';
+        
+        this.node = document.querySelector(".modal-content-info");
+        this.modalBottom = document.querySelector(".modal-buttons");
+        this.modal = document.querySelector('.modal');
+        this.close = document.querySelector(".close");
+        this.modalType = document.querySelector(".modal-type");
+        this.bookmarksList = document.querySelector(".bookmarks");
+        this.todosList = document.querySelector(".todos-list");
+        
     }
 
     getClockTime() {
@@ -39,8 +47,7 @@ class UI {
         for (let i = 0; i < this.sideNavElements; i++) {
             output += `<li>
             <a href="https://www.reddit.com${data[i].data.permalink}">${data[i].data.title}</a>
-            </li>
-            `
+            </li>`;
         }
         this.newsList.innerHTML = output;
     }
@@ -72,27 +79,20 @@ class UI {
     }
 
     createModal(fn) {
-        let node = document.querySelector(".modal-content-info");
-        let modalBottom = document.querySelector(".modal-buttons");
-        let modalCont = document.querySelector(".modal-content");
-        let modal = document.querySelector('.modal');
-        let close = document.querySelector(".close");
-        let modalType = document.querySelector(".modal-type");
-
-
-        // Remove all el in modal
-        while (node.firstChild) {
-            node.removeChild(node.firstChild);
+        // Remove all content in modal
+        while (this.node.firstChild) {
+            this.node.removeChild(this.node.firstChild);
         }
-        while (modalBottom.firstChild) {
-            modalBottom.removeChild(modalBottom.firstChild);
+        // Remove all buttons in modal
+        while (this.modalBottom.firstChild) {
+            this.modalBottom.removeChild(this.modalBottom.firstChild);
         }
 
         // Create SETTINGS MODAL
         if (fn === "settings") {
             let output = '';
             let buttons = '';
-            modalType.innerHTML = "Settings";
+            this.modalType.innerHTML = "Settings";
             const allSettings = storage.giveLSVal("settings");
             
             output += `<div class="row">
@@ -106,7 +106,7 @@ class UI {
     </div>
 </div>
 <div class="row">
-    <div class="row-entry">Random background</div>
+    <div class="row-entry">Random background (unsplash.com)</div>
     <div class="row-values">
         <label class="switch">
   <input type="checkbox" class="randomBgCheckbox">
@@ -133,14 +133,14 @@ class UI {
             </div>
 </div><hr>`;
             
-            node.innerHTML = output;
+            this.node.innerHTML = output;
             
             checkifTrue(allSettings[0][2], "randomBgCheckbox");
             checkifTrue(allSettings[0][5], "metricCheckbox");
             
             
-            buttons += `<i class="far fa-save save-settings"></i>`;
-            modalBottom.innerHTML = buttons;
+            buttons += `<a href="https://github.com/Losarunas"><i class="fab fa-github github-link"></a></i><i class="far fa-save save-settings"></i>`;
+            this.modalBottom.innerHTML = buttons;
         }
   
         // Create BOOKMARKS MODAL
@@ -150,7 +150,7 @@ class UI {
             let output = '';
             let buttons = '';
 
-            modalType.innerHTML = "Bookmarks";
+            this.modalType.innerHTML = "Bookmarks";
 
 
 
@@ -158,7 +158,7 @@ class UI {
             if (localStorage.getItem('bookmarks')) {
                 const allbookmarks = storage.giveLSVal("bookmarks");
                 allbookmarks.map(e => {
-                    output += `<form action="#" class="bookmark-form" draggable="true">
+                    output += `<form action="#" class="bookmark-form">
             <input class="bookmark-name" type="text" placeholder="Name" value="${e.bookmarkName}">
             <input class="bookmark-link" type="text" placeholder="Link" value="${e.bookmarkLink}">
             <div class="remove-bookmark">
@@ -168,7 +168,7 @@ class UI {
 
                 // IF LS item NOT FOUND create new example
             } else {
-                output += `<form action="#" class="bookmark-form" draggable="true">
+                output += `<form action="#" class="bookmark-form">
             <input class="bookmark-name" type="text" placeholder="Name" value="Youtube">
             <input class="bookmark-link" type="text" placeholder="Link" value="www.youtube.com">
             <div class="remove-bookmark">
@@ -176,48 +176,30 @@ class UI {
             </form>`;
             }
 
-            node.innerHTML = output;
+            this.node.innerHTML = output;
 
 
             // Add buttons in modal
             buttons += `<hr>
                     <i class="fas fa-plus add-new-bookmark"></i>
                     <i class="far fa-save save-bookmarks"></i>`;
-            modalBottom.innerHTML = buttons;
+            this.modalBottom.innerHTML = buttons;
 
-            
             // Add new bookmark event
             document.querySelector(".add-new-bookmark").addEventListener("click", createBookmark);
             
             // Remove Bookmark
-            node.addEventListener("click", (e) => {
+            this.node.addEventListener("click", (e) => {
                 if(e.target.classList.contains('modal-remove-bookmark')) removeBookmark(e); 
             })
-            
-//            let removeBookmarks = document.querySelectorAll(".modal-remove-bookmark");
-//            for (const remBook of removeBookmarks) {
-//                remBook.addEventListener("click", (e) => removeBookmark(e));
-//            }
 
-            // drag and drop
-            //            const bookmarks = document.querySelectorAll(".bookmark-form");
-            //            for (const bookmark of bookmarks) {
-            //                bookmark.addEventListener('dragstart', dragStart);
-            //                bookmark.addEventListener('dragend', dragEnd);
-            //                for (const allbookmark of bookmarks) {
-            //                    allbookmark.addEventListener('dragover', dragOver);
-            //                    allbookmark.addEventListener('dragenter', dragEnter);
-            //                    allbookmark.addEventListener('dragleave', dragLeave);
-            //                    allbookmark.addEventListener('drop', dragDrop);
-            //                }
-            //            }
         };
 
         // Show, close modal
-        modal.style.display = "block";
-        document.querySelector(".close").addEventListener("click", () => modal.style.display = "none");
+        this.modal.style.display = "block";
+        this.close.addEventListener("click", () => this.modal.style.display = "none");
         window.addEventListener("click", (e) => {
-            if (e.target == modal) modal.style.display = "none";
+            if (e.target == this.modal) this.modal.style.display = "none";
         });
 
     }
@@ -225,7 +207,6 @@ class UI {
 
     paintBookmarks(info) {
         let output = '';
-        let node = document.querySelector(".bookmarks");
 
         if (localStorage.getItem('bookmarks')) {
             const allbookmarks = storage.giveLSVal("bookmarks");
@@ -241,13 +222,12 @@ class UI {
         } else {
             console.log("LS empty");
         }
-        node.innerHTML = output;
+        this.bookmarksList.innerHTML = output;
     }
 
     paintToDos(val) {
         const storage = new Storage;
         let output = '';
-        let node = document.querySelector(".todos-list");
         const allTodos = storage.giveLSVal("todos")
         if (localStorage.getItem('todos')) {
             allTodos.map(e => {
@@ -257,7 +237,7 @@ class UI {
             console.log("empty");
         }
 
-        node.innerHTML += output;
+        this.todosList.innerHTML += output;
     }
 
     removeTodo(target) {
@@ -281,11 +261,10 @@ class UI {
 
 
 
-// Add new bookmark
 function createBookmark() {
     let output = '';
     let node = document.querySelector(".modal-content-info");
-    output += `<form action="#" class="bookmark-form" draggable="true">
+    output += `<form action="#" class="bookmark-form">
             <input class="bookmark-name" type="text" placeholder="Name">
             <input class="bookmark-link" type="text" placeholder="Link">
             <div class="remove-bookmark modal-remove-bookmark">
@@ -383,42 +362,3 @@ function changeUnitWind(val, unit){
     }
 }
 
-// DRAG AND DROP  IN PROGRESS
-
-//let a = '';
-//let b = '';
-//function dragStart() {
-//    this.classList.add('hold');
-//    a = this.innerHTML;
-//    console.log("start");
-//    setTimeout(() => (this.classnName = 'invisible', 0));
-//}
-//
-//function dragEnd() {
-//    this.classList.remove('invisible');
-//    console.log("end");
-//}
-//
-//function dragOver(e) {
-//    e.preventDefault();
-//}
-//
-//function dragEnter(e) {
-//    e.preventDefault();
-//    this.classList.toggle('hovered');
-//    b = this;
-//    console.log(this);
-//    console.log("enter");
-//}
-//
-//function dragLeave() {
-//    this.classList.remove('hovered');
-//    console.log("leave");
-//    b = '';
-//}
-//
-//function dragDrop() {
-//    console.log(this.innerHTML);
-//    this.innerHTML = a;
-//
-//}

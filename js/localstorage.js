@@ -1,13 +1,4 @@
 class Storage{
-    constructor(lat, lon, unit, randomBg, subredditFirst, subrreditSecond) {
-        this.lat = lat;
-        this.lon = lon;
-        this.unit = unit;
-        this.randomBg = randomBg;
-        this.subredditFirst = subredditFirst;
-        this.subrreditSecond = subrreditSecond;
-    }
-    
     // Put to LS 
     putToLS(val, key){
         if (localStorage.getItem(key) === null) {
@@ -62,6 +53,7 @@ class Storage{
     
     checkSettings(){
         const settingsLS = storage.giveLSVal("settings");
+        // If "settings" empty insert data
         if(settingsLS === null){
             let arr = [12.12, 14.14, false, "quotes", "worldnews", true];
             storage.putToLS(arr, "settings");

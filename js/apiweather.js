@@ -1,4 +1,3 @@
-//https://openweathermap.org/data/2.5/weather?lat=55.25&lon=22.28&appid=b6907d289e10d714a6e88b30761fae22
 class Weatherapi {
     constructor(lat, lon, format){
         this.lat = lat;
